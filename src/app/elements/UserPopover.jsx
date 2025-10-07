@@ -7,6 +7,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { LogOut } from "lucide-react";
+import Link from "next/link";
 
 const UserPopover = () => {
   return (
@@ -19,9 +20,11 @@ const UserPopover = () => {
       </PopoverTrigger>
       <PopoverContent className="w-fit" align="end">
         <div className="grid gap-[5px] lg:gap-[10px]">
-          <Button variant="outline" autoFocus={false}>
-            Your Statistics
-          </Button>
+          <Link href={"/add-word"} className="w-full">
+            <Button variant="outline" autoFocus={false} className="w-full">
+              Add word
+            </Button>
+          </Link>
           <Button variant="outline">Change password</Button>
           <Button variant="destructive">
             <LogOut />

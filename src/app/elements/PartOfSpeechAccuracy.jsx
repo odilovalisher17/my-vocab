@@ -38,7 +38,7 @@ const chartConfig = {
 
 export function PartOfSpeechAccuracy() {
   return (
-    <Card>
+    <Card className={"gap-0"}>
       <CardHeader className="items-center pb-4">
         <CardTitle className={"text-center"}>
           Accuracy by Part of Speech
