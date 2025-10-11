@@ -1,6 +1,6 @@
 import "./globals.css";
-
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function RootLayout({ children }) {
   return (
@@ -19,6 +19,8 @@ export default function RootLayout({ children }) {
                 {children}
               </div>
             </div>
+
+            <Toaster position="top-center" />
           </ThemeProvider>
         </body>
       </html>
