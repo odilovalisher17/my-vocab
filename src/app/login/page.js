@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,6 +14,19 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 
 export default function page() {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const data = await fetch("/api/login?username=johndoe&password=123456");
+      const user = await data.json();
+
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="w-full min-h-[calc(100vh-20px)] pt-[30%]">
       <Card className="w-full h-fit gap-0">
@@ -21,7 +35,7 @@ export default function page() {
         </CardHeader>
 
         <CardContent>
-          <form>
+          <form onSubmit={(e) => handleSubmit(e)}>
             <div className="flex flex-col gap-3">
               <div className="grid gap-2">
                 <Label htmlFor="email">Username</Label>
