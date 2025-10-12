@@ -33,7 +33,9 @@ export default function CardDemo() {
   };
 
   useEffect(() => {
-    getData();
+    if (!quizWord.word) {
+      getData();
+    }
   }, []);
 
   const handleSubmit = (e, answer, word, mode) => {
@@ -44,7 +46,7 @@ export default function CardDemo() {
       setAnswer("");
       getData();
     } else {
-      if (answer === word) {
+      if (answer.toLowerCase() === word.toLowerCase()) {
         setScore((s) => s + 1);
       } else {
         setLife((l) => l - 1);
@@ -109,14 +111,15 @@ export default function CardDemo() {
                   id="answer"
                   type="text"
                   placeholder="Write your answer"
-                  required
+                  required={mode === "game"}
+                  readOnly={mode === "answer"}
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
-                  disabled={mode === "answer"}
+                  // disabled={mode === "answer"}
                   className={
                     mode === "game"
                       ? ""
-                      : answer === quizWord.word
+                      : answer.toLowerCase() === quizWord.word?.toLowerCase()
                       ? "text-green-500"
                       : "text-red-400"
                   }
