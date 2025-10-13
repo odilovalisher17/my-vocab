@@ -1,6 +1,7 @@
 import db from "@/lib/db";
+import { NextResponse } from "next/server";
 
-// ------------------------------ Get a User --------------------------------
+// ------------------------------ Add a User --------------------------------
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const username = searchParams.get("username");
@@ -22,34 +23,15 @@ export async function GET(request) {
 
     addUser.run(username, password, 0);
 
-    return Response.json({ error: "Success" }, { status: 200 });
+    const res = NextResponse.redirect(new URL("/", request.url));
+    // const res = NextResponse.json({ success: true });
+    res.cookies.set("username", username, {
+      httpOnly: true,
+      secure: true,
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+    });
+    return res;
   }
   return Response.json({ error: "User already exists" }, { status: 409 });
-}
-
-// ------------------------------ Add word --------------------------------
-export async function POST(req) {
-  const { word, type, translation, definition, example } = await req.json();
-
-  const check_stmt = db.prepare("SELECT 1 FROM words WHERE word = ?");
-  const check_result = check_stmt.get(word);
-
-  if (!!check_result) {
-    return Response.json({ error: "Word Already exists" }, { status: 400 });
-  } else {
-    const stmt = db.prepare(`
-    INSERT INTO words (word, type, translation, definition, example, used)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `);
-
-    const result = stmt.run(
-      word.toLowerCase().trim(),
-      type,
-      translation.trim(),
-      definition.trim(),
-      example.trim(),
-      0
-    );
-    return Response.json({ success: true, id: result.lastInsertRowid });
-  }
 }
