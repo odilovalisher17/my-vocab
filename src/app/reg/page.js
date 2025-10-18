@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function page() {
   const [formData, setFormData] = useState({
@@ -21,6 +22,7 @@ export default function page() {
     password: "",
     confirm: "",
   });
+  const router = useRouter();
 
   const handleSubmit = async (e, data) => {
     e.preventDefault();
@@ -28,13 +30,23 @@ export default function page() {
       toast("Username's length should be at least 4!");
     } else if (data.password !== data.confirm) {
       toast("Passwords dont match!");
-    }
-    try {
-      await fetch(
-        `/api/reg?username=${data.username}&password=${data.password}`
-      );
-    } catch (error) {
-      toast("Username already taken!");
+    } else {
+      try {
+        const response = await fetch(
+          `/api/reg?username=${data.username}&password=${data.password}`
+        );
+        console.log(response);
+        if (!response.ok) {
+          if (response.status === 409) {
+            toast("Username already taken!");
+          } else {
+            toast(`Error: ${response.status}`);
+          }
+        }
+        router.push("/login");
+      } catch (error) {
+        toast("Username already taken!");
+      }
     }
   };
 

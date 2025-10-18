@@ -12,16 +12,33 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useState } from "react";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export default function page() {
+  const [userData, setUserData] = useState({
+    username: "",
+    password: "",
+  });
+  const router = useRouter();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const data = await fetch("/api/login?username=johndoe&password=123456");
+      const data = await fetch(
+        `/api/login?username=${userData.username}&password=${userData.password}`
+      );
       const user = await data.json();
 
-      console.log(user);
+      if (data.ok) {
+        Cookies.set("username", user.username, {
+          expires: 30, // 30 days
+          path: "/",
+        });
+        router.push("/");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -44,6 +61,10 @@ export default function page() {
                   type="text"
                   placeholder="enter your username"
                   required
+                  value={userData.username}
+                  onChange={(e) =>
+                    setUserData({ ...userData, username: e.target.value })
+                  }
                 />
               </div>
 
@@ -57,7 +78,15 @@ export default function page() {
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  value={userData.password}
+                  onChange={(e) =>
+                    setUserData({ ...userData, password: e.target.value })
+                  }
+                />
               </div>
 
               <div>

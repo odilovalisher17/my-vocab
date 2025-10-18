@@ -14,11 +14,12 @@ export async function GET(request) {
   `);
   const user = stmt.get(username);
 
-  console.log(user);
   if (!user) {
     return Response.json({ error: "User Not Found" }, { status: 404 });
   } else if (user.password !== password) {
     return Response.json({ error: "Invalid Credentials" }, { status: 401 });
+  } else if (user.password === password) {
+    return Response.json({ username: user.username, status: 200 });
   }
   return Response.json({ error: "Internal Server Error!" }, { status: 500 });
 }

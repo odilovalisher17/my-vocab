@@ -23,8 +23,8 @@ export async function GET(request) {
 
     addUser.run(username, password, 0);
 
-    const res = NextResponse.redirect(new URL("/", request.url));
-    // const res = NextResponse.json({ success: true });
+    // const res = NextResponse.redirect(new URL("/", request.url));
+    const res = NextResponse.json({ success: true, status: 200 });
     res.cookies.set("username", username, {
       httpOnly: true,
       secure: true,
