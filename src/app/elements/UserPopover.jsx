@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -8,16 +9,22 @@ import {
 } from "@/components/ui/popover";
 import { LogOut } from "lucide-react";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 const UserPopover = () => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+        <div>
+          <Avatar>
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+
+          <div>{Cookies.get("username")}</div>
+        </div>
       </PopoverTrigger>
+
       <PopoverContent className="w-fit" align="end">
         <div className="grid gap-[5px] lg:gap-[10px]">
           <Link href={"/add-word"} className="w-full">

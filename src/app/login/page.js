@@ -37,6 +37,10 @@ export default function page() {
           expires: 30, // 30 days
           path: "/",
         });
+        Cookies.set("user_id", user.id, {
+          expires: 30, // 30 days
+          path: "/",
+        });
         router.push("/");
       }
     } catch (error) {

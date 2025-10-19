@@ -38,15 +38,27 @@ export default function CardDemo() {
     }
   }, []);
 
-  const handleSubmit = (e, answer, word, mode) => {
+  const handleSubmit = async (e, answer, word, mode) => {
     e.preventDefault();
-
+    console.log(word);
+    console.log(answer);
     if (mode === "answer") {
+      await fetch("/api/his", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: 1,
+          word_id: word.id,
+          answer: answer,
+          is_correct: answer.toLowerCase() === word.word.toLowerCase(),
+        }),
+      });
+
       setMode("game");
       setAnswer("");
       getData();
     } else {
-      if (answer.toLowerCase() === word.toLowerCase()) {
+      if (answer.toLowerCase() === word.word.toLowerCase()) {
         setScore((s) => s + 1);
       } else {
         setLife((l) => l - 1);
@@ -71,7 +83,7 @@ export default function CardDemo() {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={(e) => handleSubmit(e, answer, quizWord.word, mode)}>
+          <form onSubmit={(e) => handleSubmit(e, answer, quizWord, mode)}>
             <div className="flex flex-col gap-2">
               <div>
                 {quizWord.translation} (<small>{quizWord.type}</small>)

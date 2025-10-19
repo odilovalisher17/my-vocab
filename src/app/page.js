@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,8 +14,25 @@ import { ActivityChart } from "./elements/ActivityChart";
 import { PartOfSpeechAccuracy } from "./elements/PartOfSpeechAccuracy";
 import TopMissedWords from "./elements/TopMissedWords";
 import Link from "next/link";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [userStatics, setUserStatics] = useState({
+    record: 0,
+  });
+
+  useEffect(() => {
+    const fetchStatics = async () => {
+      const res = await fetch(`/api/stats?user_id=${Cookies.get("user_id")}`);
+      const data = await res.json();
+
+      setUserStatics(data);
+    };
+
+    fetchStatics();
+  }, []);
+
   return (
     <div>
       <Card className="w-full">
@@ -28,7 +46,7 @@ export default function Home() {
         <CardContent>
           <div>
             <div className="mb-[10px]">
-              <div>Your records is : 500</div>
+              <div>Your records is : {userStatics.record}</div>
 
               <Link href="/quiz">
                 <Button

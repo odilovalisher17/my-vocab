@@ -19,7 +19,7 @@ export async function GET(request) {
   } else if (user.password !== password) {
     return Response.json({ error: "Invalid Credentials" }, { status: 401 });
   } else if (user.password === password) {
-    return Response.json({ username: user.username, status: 200 });
+    return Response.json({ username: user.username, id: user.id, status: 200 });
   }
   return Response.json({ error: "Internal Server Error!" }, { status: 500 });
 }
