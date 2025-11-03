@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [userStatics, setUserStatics] = useState({
     record: 0,
+    played_words: [],
   });
 
   useEffect(() => {
@@ -59,7 +60,8 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-            <ActivityChart />
+
+            <ActivityChart data={userStatics.played_words} />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-[10px]">
               <PartOfSpeechAccuracy />
